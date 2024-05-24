@@ -3,7 +3,7 @@ import requests
 import json
 
 # Define your domain-specific keywords
-education_keywords = [
+education_keywords = ["Hii","Hello","How are you" "hii",
     "university", "college", "course", "degree", "admission", 
     "education", "career", "job", "internship", "scholarship", 
     "study", "exam","roadmap", "class", "student", "professor", 
