@@ -3,10 +3,9 @@ import requests
 import json
 
 # Define your domain-specific keywords
-education_keywords = ["Hii","Hello","How are you" "hii",
-    "university", "college", "course", "degree", "admission", 
+education_keywords = ["university", "college", "course", "degree", "admission", 
     "education", "career", "job", "internship", "scholarship", 
-    "study", "exam","roadmap", "class", "student", "professor", 
+    "study", "exam", "roadmap", "class", "student", "professor", 
     "campus", "lecture", "assignment", "diploma", "graduation", 
     "coursework", "thesis", "research", "learning", "academics", 
     "curriculum", "semester", "grad school", "undergraduate", 
@@ -68,12 +67,17 @@ education_keywords = ["Hii","Hello","How are you" "hii",
     "archaeology", "anthropology", "sociology", "history", "political science", 
     "economics", "international relations", "philosophy", "theology", 
     "religious studies", "languages", "linguistics", "literature", "writing"]
-   
 
+# Define common greetings
+greetings = ["hi", "hello", "hey", "hii"]
 
 def is_relevant_query(query, keywords):
     query_lower = query.lower()
     return any(keyword in query_lower for keyword in keywords)
+
+def is_greeting(query, greetings):
+    query_lower = query.lower()
+    return any(greeting in query_lower for greeting in greetings)
 
 def get_ai_response(input_text, api_key, conversation_history):
     url = "https://api.openai.com/v1/chat/completions"
@@ -111,14 +115,14 @@ def main():
 
     if st.button("Send"):
         if user_input:
-            if is_relevant_query(user_input, education_keywords):
+            if is_greeting(user_input, greetings):
+                response = "Hello! How can I assist you with your education or career today?"
+            elif is_relevant_query(user_input, education_keywords):
                 st.session_state.conversation_history.append({"role": "user", "content": user_input})
                 response = get_ai_response(user_input, api_key, st.session_state.conversation_history)
                 st.session_state.conversation_history.append({"role": "assistant", "content": response})
             else:
                 response = "I'm sorry, I can only answer questions related to education and career topics."
-                st.session_state.conversation_history.append({"role": "user", "content": user_input})
-                st.session_state.conversation_history.append({"role": "assistant", "content": response})
 
             st.session_state.chat_log.append(("You", user_input))
             st.session_state.chat_log.append(("Counsellor", response))
